@@ -10,7 +10,7 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-function useLogChanges<T>(value: T) {
+export function useLogChanges<T>(value: T) {
   const previousValue = usePrevious<T>(value);
   const changes = getChanges<T>(previousValue, value);
 
