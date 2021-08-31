@@ -11,12 +11,12 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-export function useLogChanges<T>(value: T) {
+export function useLogChanges<T>(value: T, logger = console.log) {
   const previousValue = usePrevious<T>(value);
   const changes = getChanges<T>(previousValue, value);
 
   changes.forEach(change => {
-    console.log(change);
+    logger(change);
   });
 }
 
