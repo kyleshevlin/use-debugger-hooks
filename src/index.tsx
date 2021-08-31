@@ -15,11 +15,9 @@ export function useLogChanges<T>(value: T) {
   const previousValue = usePrevious<T>(value);
   const changes = getChanges<T>(previousValue, value);
 
-  if (changes.length) {
-    changes.forEach(change => {
-      console.log(change);
-    });
-  }
+  changes.forEach(change => {
+    console.log(change);
+  });
 }
 
 export function useEffectDebugger(
