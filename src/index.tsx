@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { getChanges } from './utils';
 
 function usePrevious<T>(value: T) {
   const ref = React.useRef<T | undefined>();
@@ -10,61 +11,13 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-export function useLogChanges<T>(value: T) {
+export function useLogChanges<T>(value: T, logger = console.log) {
   const previousValue = usePrevious<T>(value);
   const changes = getChanges<T>(previousValue, value);
 
-  if (changes.length) {
-    changes.forEach(change => {
-      console.log(change);
-    });
-  }
-}
-
-type Comparison<T> = {
-  name?: string;
-  previousValue: T | undefined;
-  currentValue: T;
-};
-
-type ChangeResults<T> = Array<Comparison<T>>;
-
-function getChanges<T>(
-  previousValue: T | undefined,
-  currentValue: T
-): ChangeResults<T> {
-  // Handle non-null objects
-  if (
-    typeof previousValue === 'object' &&
-    previousValue !== null &&
-    typeof currentValue === 'object' &&
-    currentValue !== null
-  ) {
-    const result = [] as ChangeResults<T>;
-    const currentEntries = Object.entries(currentValue) as Array<[string, T]>;
-
-    for (const [key, value] of currentEntries) {
-      // @ts-ignore TODO: thinks `previousValue` is unknown and not an object
-      const oldValue: T = previousValue[key];
-
-      if (value !== oldValue) {
-        result.push({
-          name: key,
-          previousValue: oldValue,
-          currentValue: value,
-        });
-      }
-    }
-
-    return result;
-  }
-
-  // Handle primitive values
-  if (previousValue !== currentValue) {
-    return [{ previousValue, currentValue }];
-  }
-
-  return [];
+  changes.forEach(change => {
+    logger(change);
+  });
 }
 
 export function useEffectDebugger(
