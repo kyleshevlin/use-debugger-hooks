@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getChanges } from './utils';
+import { Change, getChanges } from './utils';
 
 function usePrevious<T>(value: T) {
   const ref = React.useRef<T | undefined>();
@@ -11,7 +11,10 @@ function usePrevious<T>(value: T) {
   return ref.current;
 }
 
-export function useLogChanges<T>(value: T, logger = console.log) {
+export function useLogChanges<T>(
+  value: T,
+  logger: (change: Change<T>) => void = console.log
+) {
   const previousValue = usePrevious<T>(value);
   const changes = getChanges<T>(previousValue, value);
 

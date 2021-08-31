@@ -1,15 +1,15 @@
-type Comparison<T> = {
+export type Change<T> = {
   name?: string;
   previousValue: T | undefined;
   currentValue: T;
 };
 
-type ChangeResults<T> = Array<Comparison<T>>;
+type Changes<T> = Array<Change<T>>;
 
 export function getChanges<T>(
   previousValue: T | undefined,
   currentValue: T
-): ChangeResults<T> {
+): Changes<T> {
   // Handle non-null objects
   if (
     typeof previousValue === 'object' &&
@@ -17,7 +17,7 @@ export function getChanges<T>(
     typeof currentValue === 'object' &&
     currentValue !== null
   ) {
-    const result = [] as ChangeResults<T>;
+    const result = [] as Changes<T>;
     const currentEntries = Object.entries(currentValue) as Array<[string, T]>;
 
     for (const [key, value] of currentEntries) {
