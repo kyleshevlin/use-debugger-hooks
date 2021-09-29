@@ -31,5 +31,7 @@
     "forceConsistentCasingInFileNames": true,
     // `tsdx build` ignores this option, but it is commonly used when type-checking separately with `tsc`
     "noEmit": true,
+    // This is so we can use for..of with Sets and Maps
+    "downlevelIteration": true
   }
 }
